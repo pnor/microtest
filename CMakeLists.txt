@@ -9,7 +9,7 @@ set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-project(microtest CXX)
+project(microtest_main CXX)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -20,6 +20,4 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -Wall")
 
 add_subdirectory(src)
 add_subdirectory(test)
-add_subdirectory(lib/emacs_frontend)
-add_subdirectory(lib/terminal_frontend)
-add_subdirectory(lib/chip8)
+add_subdirectory(lib/microtest)

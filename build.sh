@@ -36,8 +36,8 @@ function help_message {
 # ===== Variables ===============
 #
 
-executable_name='emacs_chip8'
-test_name='emacs_chip8_test'
+executable_name='microtest_src'
+test_name='microtest_test'
 
 #
 # ===== Functions ===============
@@ -83,7 +83,7 @@ function build {
     make
 
     cd ..
-    copy_assets "Release/bin/files"
+    # copy_assets "Release/bin/files"
     bump_compile_commands_json
 }
 

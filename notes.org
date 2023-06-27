@@ -1,0 +1,22 @@
+#+title: Notes
+
+Design
+
+
+* general how-to-setup project
+a testing *library*
+so should build into a library, and then u import it and use it
+
+
+* features
+For each type of testing:
+- graph based
+- input domain
+- logic
+- syntax
+
+Translating that into test types:
+- normal *expectEquals* for input domain
+- some kind of milestones for graph based, and check all paths traversed
+- ? for logic
+- ? for syntax
