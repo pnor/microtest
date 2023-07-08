@@ -6,4 +6,6 @@ add_library(
   SHARED
   microtest.cpp
   microtest.hpp
+  expect.hpp
+  expect.cpp
 )

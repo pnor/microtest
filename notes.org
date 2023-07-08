@@ -20,3 +20,23 @@ Translating that into test types:
 - some kind of milestones for graph based, and check all paths traversed
 - ? for logic
 - ? for syntax
+
+
+* Input Domain
+ExpectEquals to test the actual output
+
+then to demonstrate, run many kinds of tests on simple functions based on different input domains
+using the expect equals library
+
+* Graph Based
+Allow user to define milestones in the code (explicitly placed)
+
+Then after running a suite of tests, and look to see if all the milestones where hit
+
+In writeup can draw a similar lookig test map
+
+* logic
+???
+
+* Syntax
+???
