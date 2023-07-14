@@ -8,4 +8,6 @@ add_library(
   microtest.hpp
   expect.hpp
   expect.cpp
+  graph.hpp
+  graph.cpp
 )

@@ -11,6 +11,7 @@ FetchContent_MakeAvailable(googletest)
 add_executable(
   microtest_test
   expect.cpp
+  graph.cpp
 )
 
 target_link_libraries(

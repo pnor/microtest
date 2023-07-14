@@ -29,14 +29,48 @@ then to demonstrate, run many kinds of tests on simple functions based on differ
 using the expect equals library
 
 * Graph Based
+
+** general idea
 Allow user to define milestones in the code (explicitly placed)
 
 Then after running a suite of tests, and look to see if all the milestones where hit
 
 In writeup can draw a similar lookig test map
 
+** How
+global way: make singleton, have lines post to it when it reaches the code
+- simple
+- but not at all thread safe
+(might have to, and this is a dumbass project already)
+
+Singelton
+microtest has a tracker object that stores string tags
+- startGraphTracking
+  + return an obj and setup a singelton for strings
+  + when it gets dropped, clear the singleton
+- graphNode("...")
+  + writes to the singelton
+- checkCoverage("...")
+  + checks if all tags hit
+
+
+
+
 * logic
 ???
 
 * Syntax
 ???
+
+* Writeup Drafting
+
+** Graph Based
+The best way to check if all paths through a block of testable code is through coverage tests like
+gcov in c++ or the coverage library in Python. This will provide an exhaustive check through every
+written line.
+
+To demonstrate a smaller, simpler example of testing through graph based coverage, I've used a node
+based approach where the programmer explicitly annotates certain lines in a function and then the
+test suite asserts all lines of code where hit after running a suite of tests. This is not at all as
+exhasutive as a full coverage based approach, but this captures some of the essence of testing via
+graph based methods.
