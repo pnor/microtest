@@ -12,6 +12,7 @@ add_executable(
   microtest_test
   expect.cpp
   graph.cpp
+  logic.cpp
 )
 
 target_link_libraries(
@@ -25,7 +26,5 @@ target_include_directories(
   microtest_test
   PUBLIC
   ${microtest_main_SOURCE_DIR}
-  ${microtest_main_SOURCE_DIR}/lib/chip8
-  ${microtest_main_SOURCE_DIR}/lib/emacs_frontend
-  ${microtest_main_SOURCE_DIR}/lib/term_frontend
+  ${microtest_main_SOURCE_DIR}/lib/microtest
 )
