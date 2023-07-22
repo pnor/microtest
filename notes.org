@@ -57,10 +57,44 @@ microtest has a tracker object that stores string tags
 
 
 * logic
-???
+clauses and stuff
 
 * Syntax
-???
+Mutation Testing based on this
+https://pitest.org/quickstart/mutators/
+
+How  to test though?
+Have to:
+- mutate func
+- run a suite of tests
+- count number mutations that pass all tests => "survived"
+- count number that failed => "killed"
+- run error => "not necessarily killed but kinda"
+
+  ====
+- assign unique hash to each mutabable line
+  + how? can't auto do it easily cuz needs to execute all paths to reach a line
+to assign a unique code to mutate it
+  + can have programmer explcitly declare tags ahead of time (will work, kinda
+ugly)
+- for each combination of mutable lines run the test suite on the function
+- count success or failure per mutation
+
+
+Functions
+runMutationTests(testFunc, testSuite, mutationTags)
+- take in test function (with mutation tags) and test cases
+- for each tag combination, record tag combo + passed or failed
+- and report total mutants survived and failed
+mutatePoint(tag)
+- apply some kinda mutation
+- tag stored
+- checks global/static activeTag location
+
+  MutationTest class
+  - store static activeTags
+
+
 
 * Writeup Drafting
 
