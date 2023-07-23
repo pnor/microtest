@@ -44,7 +44,7 @@ stringCombinations(const std::vector<std::string> &strings) {
   return results;
 }
 
-std::unordered_map<std::vector<std::vector<std::string>>, MutationTestResults>
+std::vector<MutationResult>
 MutationTest::runMutationTests(std::vector<std::function<bool()>> testFunctions,
                                std::vector<std::string> tags) {
   // create list of all tag combos (combinatorix)
@@ -53,8 +53,7 @@ MutationTest::runMutationTests(std::vector<std::function<bool()>> testFunctions,
 
   // for each combo, run test suite
   // record if it killed or survived
-  std::unordered_map<std::vector<std::vector<std::string>>, MutationTestResults>
-      resultMap;
+  std::vector<MutationResult> resultVec;
 
   for (const std::vector<std::string> &tagCombo : tagCombinations) {
     int killed = 0;
@@ -62,10 +61,10 @@ MutationTest::runMutationTests(std::vector<std::function<bool()>> testFunctions,
       killed = f() ? killed : killed + 1;
     }
     MutationTestResults testResult(killed, testFunctions.size() - killed);
-    resultMap[tagCombo] = testResult;
+    resultVec.push_back(std::make_pair(tagCombo, testResult));
   }
 
-  return resultMap;
+  return resultVec;
 }
 
 void MutationTest::setAllTags(const std::vector<std::string> &tags) {

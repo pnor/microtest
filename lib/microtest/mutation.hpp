@@ -8,6 +8,10 @@
 
 namespace microtest {
 
+struct MutationTestResults;
+
+using MutationResult = std::pair<std::vector<std::string>, MutationTestResults>;
+
 /** Class that reports the result of the test suite on a mutation. */
 struct MutationTestResults {
 public:
@@ -32,16 +36,15 @@ public:
    * Records the number of mutations that were "killed" by the test suite (at
    * least one test failed/returned false).
    */
-  static std::unordered_map<std::vector<std::vector<std::string>>,
-                            MutationTestResults>
+  static std::vector<MutationResult>
   runMutationTests(std::vector<std::function<bool()>> testFunctions,
                    std::vector<std::string> tags);
 
   /** Returns the result of `lhs > rhs`.
    * If the tag is chosen to mutate, will instead return `lhs >= rhs`
    */
-  template <typename N>
-  static bool greaterThanMutatable(N lhs, N rhs, const std::string &tag) {
+  template <typename T>
+  static bool greaterThanMutatable(T lhs, T rhs, const std::string &tag) {
     MutationTest &mt = getInstance();
     if (mt.activeTags.contains(tag)) {
       return lhs >= rhs;
@@ -53,8 +56,8 @@ public:
   /** Returns the result of `lhs < rhs`.
    * If the tag is chosen to mutate, will instead return `lhs <= rhs`
    */
-  template <typename N>
-  static bool lessThanMutable(N lhs, N rhs, const std::string &tag) {
+  template <typename T>
+  static bool lessThanMutable(T lhs, T rhs, const std::string &tag) {
     MutationTest &mt = getInstance();
     if (mt.activeTags.contains(tag)) {
       return lhs <= rhs;
@@ -63,8 +66,35 @@ public:
     }
   }
 
+  /** Returns the result of `lhs == rhs`.
+   * If the tag is chosen to mutate, will instead return `lhs != rhs`
+   */
+  template <typename T>
+  static bool equalityMutable(T lhs, T rhs, const std::string &tag) {
+    MutationTest &mt = getInstance();
+    if (mt.activeTags.contains(tag)) {
+      return lhs != rhs;
+    } else {
+      return lhs == rhs;
+    }
+  }
+
+  /** Returns the result of `lhs != rhs`.
+   * If the tag is chosen to mutate, will instead return `lhs == rhs`
+   */
+  template <typename T>
+  static bool inequalityMutable(T lhs, T rhs, const std::string &tag) {
+    MutationTest &mt = getInstance();
+    if (mt.activeTags.contains(tag)) {
+      return lhs == rhs;
+    } else {
+      return lhs != rhs;
+    }
+  }
+
   /** When this mutation is active, increments `number` by 1. */
-  static void incrementMutable(int &number, const std::string &tag) {
+  template <typename T>
+  static void incrementMutable(T &number, const std::string &tag) {
     MutationTest &mt = getInstance();
     if (mt.activeTags.contains(tag)) {
       number += 1;

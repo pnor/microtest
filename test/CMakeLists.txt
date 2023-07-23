@@ -13,6 +13,7 @@ add_executable(
   expect.cpp
   graph.cpp
   logic.cpp
+  mutation.cpp
 )
 
 target_link_libraries(
