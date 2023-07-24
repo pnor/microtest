@@ -1,7 +1,7 @@
 #pragma once
 
-#include <csignal>
 #include <functional>
+#include <iostream>
 #include <set>
 #include <string>
 #include <vector>
@@ -15,13 +15,13 @@ using MutationResult = std::pair<std::vector<std::string>, MutationTestResults>;
 /** Class that reports the result of the test suite on a mutation. */
 struct MutationTestResults {
 public:
-  int testsKilled;
-  int testsSurvived;
+  int testsFailed;
+  int testsPassed;
 
-  MutationTestResults(int killed, int survived)
-      : testsKilled(killed), testsSurvived(survived){};
+  MutationTestResults(int failed, int passed)
+      : testsFailed(failed), testsPassed(passed){};
 
-  MutationTestResults() : testsKilled(0), testsSurvived(0){};
+  MutationTestResults() : testsFailed(0), testsPassed(0){};
 };
 
 class MutationTest {
@@ -103,7 +103,6 @@ public:
 
 private:
   std::set<std::string> activeTags;
-  std::set<std::string> allTags;
 
   static MutationTest &getInstance() {
     static MutationTest instance;
@@ -111,8 +110,6 @@ private:
   }
 
   MutationTest() {}
-
-  void setAllTags(const std::vector<std::string> &tags);
 
   void setActiveTags(const std::vector<std::string> &tags);
 };

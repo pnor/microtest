@@ -1,77 +1,63 @@
 #include "mutation.hpp"
+#include <iostream>
 
 // ===== Helper =====
 
 namespace microtest {
-static inline constexpr std::vector<std::vector<std::string>>
-stringCombinationsOfSize(const std::vector<std::string> &strings,
-                         int startIndex, int size) {
-  // TODO ?? this work
-  if (static_cast<int>(strings.size()) - startIndex - size < 0) {
-    return {};
-  } else if (size <= 0) {
-    return {{}};
+std::vector<std::vector<std::string>>
+generatePermutations(const std::vector<std::string> &arr, int index) {
+  if (index == static_cast<int>(arr.size())) {
+    return {{}}; // Return an empty permutation for an empty array
   }
 
-  std::vector<std::vector<std::string>> results;
+  std::vector<std::vector<std::string>> result;
+  std::vector<std::vector<std::string>> subPermutations =
+      generatePermutations(arr, index + 1);
+  std::string currentElement = arr[index];
 
-  for (int i = startIndex; i < strings.size() - size; i++) {
-    std::string cur = strings.at(i);
-    std::vector<std::vector<std::string>> rest =
-        stringCombinationsOfSize(strings, startIndex + 1, size);
-    for (auto &res : rest) {
-      res.push_back(cur);
-      results.push_back(res);
-    }
+  // Include the current element
+  for (const auto &subPermutation : subPermutations) {
+    std::vector<std::string> newPermutation = subPermutation;
+    newPermutation.insert(newPermutation.begin(), currentElement);
+    result.push_back(newPermutation);
   }
 
-  return results;
+  // Exclude the current element
+  result.insert(result.end(), subPermutations.begin(), subPermutations.end());
+
+  return result;
+}
+
+std::vector<std::vector<std::string>>
+getAllPermutations(const std::vector<std::string> &arr) {
+  return generatePermutations(arr, 0);
 }
 
 // ===== Header =====
-
-/**
- * Return all combinations of strings in `strings`
- */
-static std::vector<std::vector<std::string>>
-stringCombinations(const std::vector<std::string> &strings) {
-  std::vector<std::vector<std::string>> results;
-  for (int i = 0; i < strings.size(); i++) {
-    std::vector<std::vector<std::string>> strs =
-        stringCombinationsOfSize(strings, 0, i);
-    results.insert(results.end(), strs.begin(), strs.end());
-  }
-  return results;
-}
 
 std::vector<MutationResult>
 MutationTest::runMutationTests(std::vector<std::function<bool()>> testFunctions,
                                std::vector<std::string> tags) {
   // create list of all tag combos (combinatorix)
   std::vector<std::vector<std::string>> tagCombinations =
-      stringCombinations(tags);
+      getAllPermutations(tags);
 
   // for each combo, run test suite
   // record if it killed or survived
   std::vector<MutationResult> resultVec;
 
+  MutationTest &mt = MutationTest::getInstance();
   for (const std::vector<std::string> &tagCombo : tagCombinations) {
-    int killed = 0;
+    mt.setActiveTags(tagCombo);
+    int failed = 0;
     for (const auto &f : testFunctions) {
-      killed = f() ? killed : killed + 1;
+      failed = f() ? failed : failed + 1;
     }
-    MutationTestResults testResult(killed, testFunctions.size() - killed);
+    MutationTestResults testResult(failed, testFunctions.size() - failed);
     resultVec.push_back(std::make_pair(tagCombo, testResult));
   }
 
   return resultVec;
-}
-
-void MutationTest::setAllTags(const std::vector<std::string> &tags) {
-  allTags.clear();
-  for (const auto &t : tags) {
-    allTags.insert(t);
-  }
 }
 
 void MutationTest::setActiveTags(const std::vector<std::string> &tags) {
