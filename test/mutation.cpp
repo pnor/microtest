@@ -109,3 +109,63 @@ TEST(MutationTests, OneMutation) {
   EXPECT_EQ(testsRan, 2);
   EXPECT_TRUE(testsFailed > 0);
 }
+
+TEST(MutationTests, ThreeMutations) {
+  std::vector<microtest::MutationResult> results =
+      microtest::MutationTest::runMutationTests(
+          testFunctions,
+          {PAREN_OPEN_PUSH, BRACKET_OPEN_CLOSE_CHECK, BRACKET_CLOSE});
+
+  int testsRan = 0;
+  int testsFailed = 0;
+  for (const auto &res : results) {
+    testsRan += 1;
+    testsFailed += res.second.testsFailed;
+  }
+
+  EXPECT_EQ(testsRan, 8);
+  EXPECT_TRUE(testsFailed > 0);
+
+  int numberMutantsKilled = 0;
+  for (const auto &result : results) {
+    if (result.first.size() > 0) {
+      EXPECT_TRUE(result.second.testsFailed > 0); // Killed mutant
+    }
+  }
+  // Killed over 80 % of mutants
+  // not all mutants will manifest in a fault; called an equivalent mutant
+  EXPECT_TRUE(static_cast<double>(results.size()) / numberMutantsKilled > 0.8);
+}
+
+TEST(MutationTests, AllMutations) {
+  std::vector<microtest::MutationResult> results =
+      microtest::MutationTest::runMutationTests(
+          testFunctions,
+          {PAREN_OPEN_PUSH, BRACKET_OPEN_CLOSE_CHECK, BRACKET_CLOSE,
+           SQUARE_OPEN_CLOSE_CHECK, SQUARE_CLOSE, PAREN_OPEN_CLOSE_CHECK,
+           PAREN_CLOSE, BRACKET_OPEN_PUSH, SQUARE_OPEN_PUSH, INC_SIZE});
+
+  int testsRan = 0;
+  int testsFailed = 0;
+
+  for (const auto &res : results) {
+    testsRan += 1;
+    testsFailed += res.second.testsFailed;
+  }
+
+  EXPECT_EQ(testsRan, 1024);
+  EXPECT_TRUE(testsFailed > 0);
+
+  int numberMutantsKilled = 0;
+  for (const auto &result : results) {
+    if (result.first.size() > 0) {
+      if (result.second.testsFailed > 0) { // Killed mutant
+        numberMutantsKilled++;
+      }
+    }
+  }
+
+  // Killed over 80 % of mutants
+  // not all mutants will manifest in a fault; called an equivalent mutant
+  EXPECT_TRUE(static_cast<double>(results.size()) / numberMutantsKilled > 0.8);
+}
