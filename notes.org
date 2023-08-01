@@ -108,3 +108,15 @@ based approach where the programmer explicitly annotates certain lines in a func
 test suite asserts all lines of code where hit after running a suite of tests. This is not at all as
 exhasutive as a full coverage based approach, but this captures some of the essence of testing via
 graph based methods.
+
+* Main src code itslef
+Demo some random leetcode question
+- working version
+- broke version
+
+Then print test case results of:
+
+expectation tests
+graph tests
+logic tests
+mutation tests

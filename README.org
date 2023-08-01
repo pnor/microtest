@@ -1,0 +1,20 @@
+#+title: Microtest
+
+This is a small project to demonstrate different ways to test code. The majority of the tests are
+implemented in the =lib= directory and implemented in the =test= directory.
+
+* How to run
+Compilation and running is handled with a build script, =build.sh=.
+
+CMake is required.
+
+** Building
+Run tests for the debug build
+#+begin_src bash
+./build.sh test
+#+end_src
+
+Run tests for the release build
+#+begin_src bash
+./build.sh test-release
+#+end_src
